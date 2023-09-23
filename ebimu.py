@@ -1,8 +1,6 @@
 import time
 import serial
 
-#parsing = " "
-
 #ser = serial.Serial('/dev/ttyUSB0',115200,timeout=0.001)#usb
 ser = serial.Serial('/dev/ttyAMA1',115200,timeout=0.001)#tx4,rx5
 buf = ""
@@ -10,7 +8,6 @@ while True:
     while ser.inWaiting():
         data = str(ser.read()).strip()
         buf += data
-        #print(data)
         if data[3] == "n":
             buf = buf.replace("'","")
             buf = buf.replace("b","")

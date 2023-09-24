@@ -6,8 +6,7 @@ EBIMU_9DOF
 <img width="423" alt="image" src="https://github.com/taeseokyang/arduino-ebimu-sensor/assets/136783693/c77a135e-a92b-49fd-aa26-529e0a934bb2">
 
 ## 설명
-EBIMU_9DOFV2 센서를 이용한 roll,pitch,yaw 데이터를</br>
-Matplot 그래프로 시각화 하는 코드.</br>
+EBIMU_9DOFV2 센서를 이용한 roll,pitch,yaw 데이터를 Matplot 그래프로 시각화.</br>
 
 ## 회로
 

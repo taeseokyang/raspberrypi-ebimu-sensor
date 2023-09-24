@@ -13,7 +13,7 @@ EBIMU_9DOFV2 센서를 이용한 roll,pitch,yaw 데이터를 Matplot 그래프�
 ### case 1 - USB로 시리얼 통신
 |Raspberry pi|센서|
 |---|---|
-|5V|VIN|
+|USB PORT|5PIN PORT|
 |GND|GND|
 |RX(0)|TX|
 |TX(1)|RX|
@@ -23,8 +23,8 @@ EBIMU_9DOFV2 센서를 이용한 roll,pitch,yaw 데이터를 Matplot 그래프�
 |---|---|
 |5V|VIN|
 |GND|GND|
-|RX(0)|TX|
-|TX(1)|RX|
+|RX(5)|TX|
+|TX(4)|RX|
 
 #### 시리얼 핀 설정 방법 
 https://m.blog.naver.com/emperonics/222039301356

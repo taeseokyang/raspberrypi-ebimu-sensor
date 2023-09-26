@@ -26,6 +26,8 @@ EBIMU_9DOFV2 센서를 이용한 roll,pitch,yaw 데이터를 Matplot 그래프�
 #### 시리얼 핀 설정 방법 
 https://m.blog.naver.com/emperonics/222039301356
 
+![2023-09-26-171006_1920x1080_scrot](https://github.com/taeseokyang/raspberrypi-ebimu-sensor/assets/136783693/4167746b-a1cf-4d16-be81-1d8e7151d10e)
+![2023-09-26-171240_1920x1080_scrot](https://github.com/taeseokyang/raspberrypi-ebimu-sensor/assets/136783693/82b55045-b8d8-41f0-b8e3-4a5d2bdebf69)
 
 
 

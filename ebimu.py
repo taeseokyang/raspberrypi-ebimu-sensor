@@ -24,11 +24,7 @@ def init():
 
 # animate function for animation function
 def animate(_):
-    rolls = []
-    pitches = []
-    yaws = []
     buf = ""
-
     # read value
     while ser.inWaiting():
         data = str(ser.read()).strip()
@@ -39,30 +35,26 @@ def animate(_):
            
             # split each data
             try :
-                roll, pitch, yaw = map(float,buf[2:-4].split(','))
+                roll, pitch, yaw = map(float,buf[1:-4].split(','))
             except:
                 continue
+
             print(roll,pitch,yaw)
-            
-            # append to data buffer
-            rolls.append(roll)
-            pitches.append(pitch)
-            yaws.append(yaw)
-            buf = " "
+            buf = ""
 
-    # graph update
-    oldAccelX = accelLineX.get_ydata()
-    newAccelX = np.r_[oldAccelX[1:], rolls[1:]]
-    accelLineX.set_ydata(newAccelX[-100:])
+            # graph update
+            oldAccelX = accelLineX.get_ydata()
+            newAccelX = np.r_[oldAccelX[1:], roll]
+            accelLineX.set_ydata(newAccelX[-100:])
 
-    oldAccelY = accelLineY.get_ydata()
-    newAccelY = np.r_[oldAccelY[1:], pitches[1:]]
-    accelLineY.set_ydata(newAccelY[-100:])
+            oldAccelY = accelLineY.get_ydata()
+            newAccelY = np.r_[oldAccelY[1:], pitch]
+            accelLineY.set_ydata(newAccelY[-100:])
 
-    oldAccelZ = accelLineZ.get_ydata()
-    newAccelZ = np.r_[oldAccelZ[1:], yaws[1:]]
-    accelLineZ.set_ydata(newAccelZ[-100:])
-
+            oldAccelZ = accelLineZ.get_ydata()
+            newAccelZ = np.r_[oldAccelZ[1:], yaw]
+            accelLineZ.set_ydata(newAccelZ[-100:])
+    
     return accelLineX, accelLineY, accelLineZ
 
 anim = animation.FuncAnimation(fig, animate, init_func=init, frames=200, interval=20, blit=False)

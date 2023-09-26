@@ -1,49 +1,56 @@
 import time
 import serial
-import os
-import threading
 from matplotlib import pyplot as plt
 from matplotlib import animation
 import numpy as np
-import queue
 
-#ser = serial.Serial('/dev/ttyUSB0',115200,timeout=0.001)#usb
-ser = serial.Serial('/dev/ttyAMA1',115200,timeout=0.001)#tx4,rx5
+#ser = serial.Serial('/dev/ttyUSB0',115200,timeout=0.001) #when connect to usb
+ser = serial.Serial('/dev/ttyAMA1',115200,timeout=0.001) #when connect to pins (tx4,rx5)
 
+# maek graph 
 max_points = 100
-
 fig=plt.figure()
-accelLineX, = plt.plot(np.arange(max_points), np.ones(max_points, dtype=np.float64)*np.nan, lw=1, color='red', label='x')
-accelLineY, = plt.plot(np.arange(max_points), np.ones(max_points, dtype=np.float64)*np.nan, lw=1, color='green', label='y')
-accelLineZ, = plt.plot(np.arange(max_points), np.ones(max_points, dtype=np.float64)*np.nan, lw=1, color='blue', label='z')
+accelLineX, = plt.plot(np.arange(max_points), np.ones(max_points, dtype=np.float64)*np.nan, lw=1, color='red', label='roll')
+accelLineY, = plt.plot(np.arange(max_points), np.ones(max_points, dtype=np.float64)*np.nan, lw=1, color='green', label='pitch')
+accelLineZ, = plt.plot(np.arange(max_points), np.ones(max_points, dtype=np.float64)*np.nan, lw=1, color='blue', label='yaw')
 plt.ylim(-200,200)
 plt.xlim(0,100)
+plt.title('Ebimu Live Plotter')
+plt.legend()
 
+# init function for animation function
 def init():
     return accelLineX, accelLineY, accelLineZ
 
-def animate(i):
+# animate function for animation function
+def animate(_):
     rolls = []
     pitches = []
     yaws = []
     buf = ""
+
+    # read value
     while ser.inWaiting():
         data = str(ser.read()).strip()
-        buf += data
-        if data[3] == "n":
-            buf = buf.replace("'","")
-            buf = buf.replace("b","")
-            #if it is not num then error
-            roll, pitch, yaw = map(float,buf[2:-4].split(','))
+        buf += data # buffering
+        if data[3] == "n": # last data of one line is '\n' so when data[3] is n then do decode 
+            buf = buf.replace("'","") # remove (') and (b) because data has (') and (b) like this b'10.55' 
+            buf = buf.replace("b","") 
+           
+            # split each data
+            try :
+                roll, pitch, yaw = map(float,buf[2:-4].split(','))
+            except:
+                continue
             print(roll,pitch,yaw)
+            
+            # append to data buffer
             rolls.append(roll)
             pitches.append(pitch)
             yaws.append(yaw)
             buf = " "
-    #print(rolls)
 
-
-
+    # graph update
     oldAccelX = accelLineX.get_ydata()
     newAccelX = np.r_[oldAccelX[1:], rolls[1:]]
     accelLineX.set_ydata(newAccelX[-100:])
@@ -55,10 +62,8 @@ def animate(i):
     oldAccelZ = accelLineZ.get_ydata()
     newAccelZ = np.r_[oldAccelZ[1:], yaws[1:]]
     accelLineZ.set_ydata(newAccelZ[-100:])
+
     return accelLineX, accelLineY, accelLineZ
-        
+
 anim = animation.FuncAnimation(fig, animate, init_func=init, frames=200, interval=20, blit=False)
-
 plt.show()
-
-os.system("pause")

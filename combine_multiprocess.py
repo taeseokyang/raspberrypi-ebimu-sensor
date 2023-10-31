@@ -38,7 +38,7 @@ def ebimu_process(n):
                 try :
                     roll, pitch, yaw, x, y, z = map(float,buf[1:-4].split(','))
                 except Exception as e:
-                    print("error:",list(map(float,buf[1:-4].split(','))))
+                    print("Data processing error:",list(map(float,buf[1:-4].split(','))))
                     log.write(str(e)+"\n")
                     buf = ""
                     continue

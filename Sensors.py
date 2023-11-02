@@ -106,15 +106,15 @@ if __name__ == '__main__':
 
     #Bmp280
     while True:
-        altitude = bmp280.altitude # 고도 값 가져오기
+        altitude = bmp280.altitude # 글로벌 고도 값 가져오기
         if init_altitude == 0: 
             init_altitude = altitude # 캘리브레이션 수행
-        cali_altitude = altitude - init_altitude # 캘리 기준 고도 계산
+        cali_altitude = altitude - init_altitude # 로컬 고도 계산
         result = cali_altitude
         data.append(result) # 데이터 리스트에 추가
 
         if len(data) < window: 
-            data.append(init_altitude) # 데이터의 개수가 윈도우 보다 작다면 기준 고도 추가
+            data.append(init_altitude) # 데이터의 개수가 윈도우 보다 작다면 글로벌 고도 추가
         
         ma = moving_average(data, window) # 이동 평균 리스트 반환
         ma = np.array(ma) # 넘파이 배열로 변환
@@ -140,9 +140,9 @@ if __name__ == '__main__':
                     GPIO.cleanup()
                     # pass
 
-        # 고도 출력
+        # 로컬 고도 출력
         print("Calibration Altitude: ", cali_altitude)
-        # 고도 데이터 저장
+        # 로컬 고도 데이터 저장
         f.write(f"Calibration altitude: {cali_altitude} m\n")
 
 #파일 열기 예외 처리에 강제 종료가 있어야 된다 생각함.
